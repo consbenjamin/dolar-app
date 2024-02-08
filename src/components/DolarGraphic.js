@@ -96,7 +96,7 @@ const DolarGraphic = ({ historicalDolarData, selectedDolarType }) => {
     };
   }, [historicalDolarData, selectedDolarType]);
 
-  return <div ref={chartContainerRef}></div>
+  return <div className='' ref={chartContainerRef}></div>
 };
 
 export default DolarGraphic;

@@ -8,13 +8,13 @@ const Contact = () => {
     <div className="sm:p-10 my-36">
       <section className="mx-auto max-w-screen-md md:rounded-md md:border md:shadow-lg">
         <div className=" text-gray-800 border-t-green-800 border-t-4">
-          <div className=" bg-gray-50 px-8 py-10 text-gray-800 md:border-r md:px-10 md:py-12">
+          <div className=" bg-gray-50 px-8 py-10 text-gray-800 md:border-r md:px-10 md:py-12 grid grid-cols-2">
             <h2 className="mb-8 text-2xl font-black">Contacto</h2>
-            <ul>
+            <ul className='overflow-hidden'>
               <li className="mb-6 flex items-start">
                 <div>
                   <AiFillMail />
-                  <p className="font-serif text-base md:text-lg">cons_benjamin9@outlook.com</p>
+                  <a className="font-serif text-base md:text-lg" href="mailto:cons_benjamin9@outlook.com">cons_benjamin9@outlook.com</a>
                   <span className="block text-xs uppercase">email</span>
                 </div>
               </li>
