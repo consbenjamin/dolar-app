@@ -53,7 +53,10 @@ const HomePage = () => {
   return (
     <div className=''>
       <h1 className='text-4xl font-bold my-6 text-black rounded-lg'>Cotización Actual Dólar en Argentina</h1>
-      {loading ? <p>Cargando...</p> : error ? <p>Error: {error}</p> : (
+      {loading ? (
+        <div className="flex justify-center items-center">
+          <img src="../assets/loading.gif" alt="Cargando" />
+        </div> ) : error ? <p>Error: {error}</p> : (
         <div>
           <div className="grid md:grid-cols-4 gap-2 grid-cols-1 p-3 md:p-0">
             {['blue', 'oficial', 'bolsa', 'cripto', 'tarjeta', 'contadoconliqui', 'mayorista'].map(casa => (
