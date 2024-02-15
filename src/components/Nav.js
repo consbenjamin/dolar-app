@@ -15,7 +15,7 @@ const Nav = () => {
         </button>
         <Link href="/">
           <h1 className='text-2xl sm:text-3xl lg:text-4xl font-bold text-green-800'> 
-              Dolar<span className='font-normal text-black'>Actual</span>
+              Dólar<span className='font-normal text-black'>Actual</span>
           </h1>
         </Link>
         {/* <SearchBar/> */}

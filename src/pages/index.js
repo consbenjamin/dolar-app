@@ -1,4 +1,6 @@
 import React, { useState, useEffect} from 'react';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 import DolarGraphic from '../components/DolarGraphic';
 import axios from 'axios';
 
@@ -8,17 +10,68 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedDolarType, setSelectedDolarType] = useState('blue');
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedHistoricalData, setSelectedHistoricalData] = useState(null);
 
   const toggleDolarType = (dolarType) => {
     console.log("Toggle Dolar Type:", dolarType);
     setSelectedDolarType(dolarType);
   };
 
-  const handleDolarTypeChange = (event) => {
+  const handleDolarTypeChange = async (event) => {
     event.preventDefault();
     event.stopPropagation();
     const selectedType = event.target.value;
     toggleDolarType(selectedType);
+  
+    try {
+      // Formatear la fecha seleccionada
+      const formattedDate = selectedDate ? `${selectedDate.getFullYear()}/${(selectedDate.getMonth() + 1)
+        .toString()
+        .padStart(2, '0')}/${selectedDate.getDate().toString().padStart(2, '0')}` : '';
+  
+      if (formattedDate !== '') {
+        // Hacer la solicitud GET a la API
+        const response = await axios.get(
+          `https://api.argentinadatos.com/v1/cotizaciones/dolares/${selectedType}/${formattedDate}`
+        );
+        // Obtener los datos de la respuesta
+        const data = response.data;
+        // Establecer los datos en el estado
+        setSelectedHistoricalData(data);
+        setError(null);
+      }
+    } catch (error) {
+      console.error('Error fetching data for selected date:', error);
+      // Manejar el error
+      setError('Error fetching data for selected date');
+      setSelectedHistoricalData(null);
+    }
+  };
+
+  const handleDateChange = async (date) => {
+    setSelectedDate(date);
+
+    try {
+      // Formatear la fecha seleccionada
+      const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1)
+        .toString()
+        .padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`;
+      // Hacer la solicitud GET a la API
+      const response = await axios.get(
+        `https://api.argentinadatos.com/v1/cotizaciones/dolares/${selectedDolarType}/${formattedDate}`
+      );
+      // Obtener los datos de la respuesta
+      const data = response.data;
+      // Establecer los datos en el estado
+      setSelectedHistoricalData(data);
+      setError(null);
+    } catch (error) {
+      console.error('Error fetching data for selected date:', error);
+      // Manejar el error
+      setError('Error fetching data for selected date');
+      setSelectedHistoricalData(null);
+    }
   };
 
   useEffect(() => {
@@ -45,10 +98,14 @@ const HomePage = () => {
 
     fetchData('/api/dolar', setDolarData);
     fetchData('/api/dolarHistorico', setHistoricalDolarData);
-  }, []);
+  }, [selectedDolarType]);
 
 
   const getDolarByCasa = (casa) => dolarData.find(dolar => dolar.casa === casa);
+
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
 
   return (
     <div className=''>
@@ -85,7 +142,7 @@ const HomePage = () => {
             <h1 className='text-4xl font-bold my-6 text-black rounded-lg'>Cotización Histórica</h1>
             <label className="ml-4 text-black">Tipo de Dólar:</label>
             <select 
-              className="border p-2 ml-2 uppercase focus:border-green-600 rounded-md text-sm"
+              className="border p-2 ml-2 uppercase focus:border-green-600 rounded-md text-sm font-semibold"
               value={selectedDolarType}
               onChange={handleDolarTypeChange}
             >
@@ -95,6 +152,29 @@ const HomePage = () => {
                 </option>
               ))}
             </select>
+
+
+            <label className='ml-4 text-black'>Seleccionar fecha:</label>
+            
+            <DatePicker
+              className="border p-2 ml-2 uppercase hover:border-green-600 rounded-md text-sm w-28"
+              selected={selectedDate}
+              onChange={handleDateChange}
+              dateFormat="dd-MM-yyyy"
+              popperPlacement="top"
+              maxDate={yesterday} 
+            />
+
+            {selectedHistoricalData && (
+              <div className='ml-4 mt-2'>
+                {/* <p className='text-black sm:text-sm md:text-lg'>Cotización histórica para el dólar {selectedDolarType} <span className='font-semibold'>{selectedDate.toLocaleDateString()}</span>:</p> */}
+                <div className='mt-2 text-lg'>
+                  <p className=' font-semibold text-green-600'>Compra: <span className='font-bold'>${selectedHistoricalData.compra}</span></p>
+                  <p className='font-semibold text-red-600'>Venta: <span className='font-bold'>${selectedHistoricalData.venta}</span></p>
+                </div>
+              </div>
+            )}
+
             <div className=''>
               <DolarGraphic 
                 historicalDolarData={historicalDolarData} 
