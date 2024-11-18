@@ -1,7 +1,7 @@
 
 Dolar-App es una aplicación web desarrollada utilizando tecnologías modernas como Next.js, Lightweight-Charts, Node-Cache y React, diseñada para brindar a los usuarios información actualizada y histórica sobre las cotizaciones del dólar en Argentina. Esta aplicación se integra con una API externa confiable para obtener datos precisos y en tiempo real sobre las variaciones del dólar en el mercado argentino.
 
-Api utilizada: https://dolarapi.com
+Api utilizada: dolarapi
 
 Características Destacadas:
 
@@ -17,3 +17,5 @@ Actualizaciones Automáticas: Dolar-App se actualiza automáticamente con las ú
 
 Objetivo:
 El objetivo principal de Dolar-App es proporcionar a los usuarios una herramienta confiable y fácil de usar para rastrear las cotizaciones del dólar en Argentina, ayudándolos a tomar decisiones financieras informadas y estar al tanto de los cambios en el mercado.
+
+Sitio Web : https://dolar-actual.vercel.app/
